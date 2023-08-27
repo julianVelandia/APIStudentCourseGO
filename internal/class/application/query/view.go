@@ -1,4 +1,4 @@
-package command
+package query
 
 type View struct {
 	email   string

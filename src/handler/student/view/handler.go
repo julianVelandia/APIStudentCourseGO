@@ -16,26 +16,16 @@ type UseCase interface {
 	Execute(email string) (domain.Profile, []domain.Class, error)
 }
 
-type Handler interface {
-	Handler(ginCtx *gin.Context)
-}
-
-type GetHandler struct {
+type Handler struct {
 	mapper  Mapper
 	useCase UseCase
 }
 
-func (h GetHandler) Handler(ginCtx *gin.Context) {
-	//TODO implement me
-	panic("implement me")
+func NewHandler(mapper Mapper, useCase UseCase) *Handler {
+	return &Handler{mapper: mapper, useCase: useCase}
 }
 
-func NewGetHandler(mapper Mapper, useCase UseCase) *GetHandler {
-	return &GetHandler{mapper: mapper, useCase: useCase}
-}
-
-func (h GetHandler) handler(ginCTX *gin.Context) {
-
+func (h Handler) Handler(ginCTX *gin.Context) {
 	request := &contract.Request{}
 	if errBinding := ginCTX.BindJSON(request); errBinding != nil {
 		ginCTX.JSON(http.StatusBadRequest, nil)

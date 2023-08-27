@@ -13,6 +13,10 @@ type ViewUseCase struct {
 	repositoryViewProfile RepositoryViewProfile
 }
 
+func NewViewUseCase(repositoryViewProfile RepositoryViewProfile) *ViewUseCase {
+	return &ViewUseCase{repositoryViewProfile: repositoryViewProfile}
+}
+
 func (uc ViewUseCase) Execute(email string) (domain.Profile, []domain.Class, error) {
 
 	domainProfile, err := uc.repositoryViewProfile.GetProfileByEmail(email)

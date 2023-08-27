@@ -17,28 +17,27 @@ type UseCase interface {
 	Execute(qry query.View) (domain.Class, error)
 }
 
-type Handler interface {
-	Handler(ginCtx *gin.Context)
-}
-
-type GetHandler struct {
+type Handler struct {
 	mapper  Mapper
 	useCase UseCase
 }
 
-func NewGetHandler(mapper Mapper, useCase UseCase) *GetHandler {
-	return &GetHandler{mapper: mapper, useCase: useCase}
+func NewHandler(mapper Mapper, useCase UseCase) *Handler {
+	return &Handler{mapper: mapper, useCase: useCase}
 }
 
-func (h GetHandler) handler(ginCTX *gin.Context) {
-
+func (h Handler) Handler(ginCTX *gin.Context) {
 	request := &contract.Request{}
 	if errBinding := ginCTX.BindJSON(request); errBinding != nil {
 		ginCTX.JSON(http.StatusBadRequest, nil)
 		return
 	}
 
-	qry := query.NewView(request.ClassID, request.Email)
+	qry := query.NewView(
+		request.Email,
+		request.ClassID,
+		request.Title,
+	)
 	domainProfile, errorUseCase := h.useCase.Execute(*qry)
 	if errorUseCase != nil {
 		ginCTX.JSON(http.StatusInternalServerError, domainProfile)

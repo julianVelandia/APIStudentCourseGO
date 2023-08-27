@@ -1,26 +1,15 @@
 package mapper
 
 import (
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/domain"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/infrastructure/repository/json/dto"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/command"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/infrastructure/repository/json/dto"
 )
 
 type Mapper struct{}
 
-func (m Mapper) DTOProfileToDomain(profile dto.Profile) domain.Profile {
-	return *domain.NewProfile(
-		profile.Email,
-		profile.Name,
-	)
-}
-
-func (m Mapper) DTOClassesToDomain(classes []dto.Class) []domain.Class {
-	domainClasses := make([]domain.Class, len(classes))
-	for i := range classes {
-		domainClasses[i] = *domain.NewClass(
-			classes[i].ClassID,
-			classes[i].Title,
-		)
+func (m Mapper) CommandToDTOClass(cmd command.Update) dto.Class {
+	return dto.Class{
+		ClassID: cmd.ClassID(),
+		Title:   cmd.Title(),
 	}
-	return domainClasses
 }

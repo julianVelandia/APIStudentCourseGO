@@ -13,9 +13,9 @@ const (
 	testName  = "My Name"
 )
 
-func TestDomainToResponse(t *testing.T) {
+func TestMapper_DomainToResponse(t *testing.T) {
 	domainProfile := domain.NewProfile(testEmail, testName)
-	domainesDone := []domain.Class{
+	domainDoneArray := []domain.Class{
 		*domain.NewClass("id1", "Clase 1"),
 		*domain.NewClass("id2", "Clase 2"),
 	}
@@ -30,7 +30,7 @@ func TestDomainToResponse(t *testing.T) {
 		ClassesDone: responseClassesDone,
 	}
 
-	response := mapper.DomainToResponse(*domainProfile, domainesDone)
+	response := mapper.DomainToResponse(*domainProfile, domainDoneArray)
 
 	assert.Equal(t, expectedResponse, response)
 }

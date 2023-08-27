@@ -20,5 +20,4 @@ func configureMappings(router *gin.Engine, handlers dependence.HandlerContainer)
 	// Classes
 	apiGroupClasses := router.Group("v1.0/classes")
 	apiGroupClasses.GET("/class/:class_id", handlers.ViewClassHandler.Handler)
-	apiGroupClasses.GET("/list/", handlers.ListClassesHandler.Handler)
 }

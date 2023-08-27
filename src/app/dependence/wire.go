@@ -2,64 +2,70 @@ package dependence
 
 import (
 	useCaseClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/usecase"
+	repositoryViewClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/infrastructure/repository/json/read"
+	mapperRepositoryViewClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/infrastructure/repository/json/read/mapper"
+	repositoryUpdateClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/infrastructure/repository/json/write"
+	mapperRepositoryUpdateClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/infrastructure/repository/json/write/mapper"
 	useCaseStudent "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/application/usecase"
-	handlerListClasses "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/list"
-	handlerMapperListClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/list/mapper"
+	repositoryViewProfile "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/infrastructure/repository/json/read"
+	mapperRepositoryViewProfile "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/infrastructure/repository/json/read/mapper"
 	handlerViewClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/view"
+	mapperViewClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/view/mapper"
 	handlerViewProfile "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/student/view"
+	mapperViewProfile "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/student/view/mapper"
 )
 
 type HandlerContainer struct {
 	ViewProfileHandler handlerViewProfile.Handler
-	ListClassesHandler handlerListClasses.Handler
 	ViewClassHandler   handlerViewClass.Handler
 }
 
 func NewWire() HandlerContainer {
+	repositoryClassRead := repositoryViewClass.NewClassRepositoryRead(
+		mapperRepositoryViewClass.Mapper{},
+	)
+	repositoryClassUpdate := repositoryUpdateClass.NewClassRepositoryWrite(
+		mapperRepositoryUpdateClass.Mapper{},
+	)
+	repositoryProfileRead := repositoryViewProfile.NewProfileRepositoryRead(
+		mapperRepositoryViewProfile.Mapper{},
+	)
 
 	return HandlerContainer{
-		ListClassesHandler: newWireListClassesHandler(repositoryClassList),
-		ViewClassHandler:   newWireViewClassHandler(repositoryClassView, repositoryClassList),
-		ViewProfileHandler: newWireViewProfileHandler(),
+		ViewClassHandler: newWireViewClassHandler(
+			*repositoryClassRead,
+			*repositoryClassUpdate,
+		),
+		ViewProfileHandler: newWireViewProfileHandler(
+			*repositoryProfileRead,
+		),
 	}
 }
 
-func newWireListClassesHandler(
-	repositoryList repositoryClassSQL.SqlListRepository,
-) handlerListClasses.Handler {
-
-	useCaseList := useCaseListClass.NewUseCase(
-		repositoryList,
-	)
-	return *handlerListClasses.NewHandler(
-		useCaseList,
-		handlerMapperListClass.HandlerMapper{},
-		platformParams.NewParamValidation(getParamsValidationDefault()),
-	)
-}
-
 func newWireViewClassHandler(
-	repositoryView repositoryClassSQL.SqlViewRepository,
-	repositoryList repositoryClassSQL.SqlListRepository,
+	repositoryViewClass repositoryViewClass.ClassRepositoryRead,
+	repositoryUpdateClass repositoryUpdateClass.ClassRepositoryWrite,
 ) handlerViewClass.Handler {
 
-	useCaseView := useCaseClass.NewUseCase(
-		repositoryView,
-		repositoryList,
+	useCaseView := useCaseClass.NewViewUseCase(
+		repositoryViewClass,
+		repositoryUpdateClass,
 	)
 	return *handlerViewClass.NewHandler(
+		mapperViewClass.Mapper{},
 		useCaseView,
-		handlerMapperViewClass.HandlerMapper{},
-		platformParams.NewParamValidation(getParamsValidationDefault()),
 	)
 }
 
-func newWireViewProfileHandler() handlerViewProfile.Handler {
-	useCaseViewProfile := useCaseStudent.NewUseCase(
-		repositoryWrite,
+func newWireViewProfileHandler(
+	repositoryViewProfile repositoryViewProfile.ProfileRepositoryRead,
+) handlerViewProfile.Handler {
+	useCaseViewProfile := useCaseStudent.NewViewUseCase(
+		repositoryViewProfile,
 	)
 
-	return handlerViewProfile.NewGetHandler(
+	return *handlerViewProfile.NewHandler(
+		mapperViewProfile.Mapper{},
 		useCaseViewProfile,
 	)
 }

@@ -22,6 +22,10 @@ type ProfileRepositoryRead struct {
 	mapper Mapper
 }
 
+func NewProfileRepositoryRead(mapper Mapper) *ProfileRepositoryRead {
+	return &ProfileRepositoryRead{mapper: mapper}
+}
+
 func (r ProfileRepositoryRead) GetProfileByEmail(emailToFind string) (domain.Profile, error) {
 	data, err := os.ReadFile(filenameProfile)
 	if err != nil {

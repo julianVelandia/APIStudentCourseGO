@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/command"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/domain"
 )
 
@@ -10,7 +11,7 @@ type RepositoryViewClass interface {
 }
 
 type RepositoryUpdateClassesDone interface {
-	UpdateClassesByEmail(cmd command.View) error
+	UpdateClassesByEmail(cmd command.Update) error
 }
 
 type ViewUseCase struct {
@@ -18,14 +19,22 @@ type ViewUseCase struct {
 	repositoryUpdateClassesDone RepositoryUpdateClassesDone
 }
 
-func (uc ViewUseCase) Execute(cmd command.View) (domain.Class, error) {
+func NewViewUseCase(repositoryViewClass RepositoryViewClass, repositoryUpdateClassesDone RepositoryUpdateClassesDone) *ViewUseCase {
+	return &ViewUseCase{repositoryViewClass: repositoryViewClass, repositoryUpdateClassesDone: repositoryUpdateClassesDone}
+}
 
-	domainClass, err := uc.repositoryViewClass.GetClassByClassID(cmd.ClassID())
+func (uc ViewUseCase) Execute(qry query.View) (domain.Class, error) {
+	domainClass, err := uc.repositoryViewClass.GetClassByClassID(qry.ClassID())
 	if err != nil {
 		return domain.Class{}, err
 	}
 
-	err = uc.repositoryUpdateClassesDone.UpdateClassesByEmail(cmd)
+	cmd := command.NewUpdate(
+		qry.ClassID(),
+		qry.Email(),
+		qry.Title(),
+	)
+	err = uc.repositoryUpdateClassesDone.UpdateClassesByEmail(*cmd)
 	if err != nil {
 		return domain.Class{}, err
 	}

@@ -1,4 +1,4 @@
-package read
+package write
 
 import (
 	"encoding/json"

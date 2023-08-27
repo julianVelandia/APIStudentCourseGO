@@ -21,6 +21,10 @@ type ClassRepositoryRead struct {
 	mapper Mapper
 }
 
+func NewClassRepositoryRead(mapper Mapper) *ClassRepositoryRead {
+	return &ClassRepositoryRead{mapper: mapper}
+}
+
 func (r ClassRepositoryRead) GetClassByClassID(classID string) (domain.Class, error) {
 	data, err := os.ReadFile(filenameClasses)
 	if err != nil {
