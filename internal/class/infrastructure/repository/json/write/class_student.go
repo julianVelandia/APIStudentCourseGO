@@ -13,14 +13,18 @@ const (
 )
 
 type Mapper interface {
-	DomainToDTOClass(cmd command.View) dto.Class
+	CommandToDTOClass(cmd command.Update) dto.Class
 }
 
 type ClassRepositoryWrite struct {
 	mapper Mapper
 }
 
-func (r ClassRepositoryWrite) UpdateClassesByEmail(cmd command.View) error {
+func NewClassRepositoryWrite(mapper Mapper) *ClassRepositoryWrite {
+	return &ClassRepositoryWrite{mapper: mapper}
+}
+
+func (r ClassRepositoryWrite) UpdateClassesByEmail(cmd command.Update) error {
 	data, err := os.ReadFile(filenameClassesDone)
 	if err != nil {
 		return err
@@ -32,7 +36,7 @@ func (r ClassRepositoryWrite) UpdateClassesByEmail(cmd command.View) error {
 		return err
 	}
 
-	newClass := r.mapper.DomainToDTOClass(cmd)
+	newClass := r.mapper.CommandToDTOClass(cmd)
 	classesDoneByUser[cmd.Email()] = append(classesDoneByUser[cmd.Email()], newClass)
 
 	updatedData, err := json.MarshalIndent(classesDoneByUser, "", "  ")
