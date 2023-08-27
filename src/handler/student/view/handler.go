@@ -25,6 +25,11 @@ type GetHandler struct {
 	useCase UseCase
 }
 
+func (h GetHandler) Handler(ginCtx *gin.Context) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func NewGetHandler(mapper Mapper, useCase UseCase) *GetHandler {
 	return &GetHandler{mapper: mapper, useCase: useCase}
 }

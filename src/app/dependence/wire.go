@@ -1,7 +1,8 @@
 package dependence
 
 import (
-	useCaseListClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/usecase"
+	useCaseClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/usecase"
+	useCaseStudent "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/application/usecase"
 	handlerListClasses "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/list"
 	handlerMapperListClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/list/mapper"
 	handlerViewClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/view"
@@ -15,15 +16,6 @@ type HandlerContainer struct {
 }
 
 func NewWire() HandlerContainer {
-
-	environmentConfig := configuration.GetConfig()
-	sqlClient := environmentConfig.ConfigMySQLClient().NewMysqlClient(environmentConfig.Scope().Value())
-	repositoryMapperClass := repositoryClassMapperSQL.Mapper{}
-
-	repositoryClassList := repositoryClassSQL.NewSqlListRepository(sqlClient, repositoryMapperClass)
-	repositoryClassView := repositoryClassSQL.NewSqlViewRepository(sqlClient, repositoryMapperClass)
-
-	repositoryStudentWrite := repositoryStudentSQL.NewSqlWriteRepository(sqlClient)
 
 	return HandlerContainer{
 		ListClassesHandler: newWireListClassesHandler(repositoryClassList),
@@ -51,7 +43,7 @@ func newWireViewClassHandler(
 	repositoryList repositoryClassSQL.SqlListRepository,
 ) handlerViewClass.Handler {
 
-	useCaseView := useCaseViewClass.NewUseCase(
+	useCaseView := useCaseClass.NewUseCase(
 		repositoryView,
 		repositoryList,
 	)
@@ -62,12 +54,12 @@ func newWireViewClassHandler(
 	)
 }
 
-func newWireViewProfileHandler() handlerSaveNewsLetter.Handler {
-	useCaseSaveEmailNewsLetter := useCaseNewsLetterEmail.NewUseCase(
+func newWireViewProfileHandler() handlerViewProfile.Handler {
+	useCaseViewProfile := useCaseStudent.NewUseCase(
 		repositoryWrite,
 	)
 
-	return *handlerSaveNewsLetter.NewHandler(
-		useCaseSaveEmailNewsLetter,
+	return handlerViewProfile.NewGetHandler(
+		useCaseViewProfile,
 	)
 }
