@@ -1,0 +1,8 @@
+{
+  "test1@email.com": {
+    "name": "name1"
+  },
+  "test2@email.com": {
+    "name": "name2"
+  }
+}

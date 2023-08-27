@@ -1,19 +1,20 @@
-package profile
+package view
 
 import (
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/domain"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/student/profile/contract"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/domain"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/view/contract"
 )
 
 type Mapper interface {
-	DomainToResponse(profile domain.Profile) contract.Response
+	DomainToResponse(class domain.Class) contract.Response
 }
 
 type UseCase interface {
-	Execute(email string) (domain.Profile, error)
+	Execute(qry query.View) (domain.Class, error)
 }
 
 type Handler interface {
@@ -37,7 +38,8 @@ func (h GetHandler) handler(ginCTX *gin.Context) {
 		return
 	}
 
-	domainProfile, errorUseCase := h.useCase.Execute(request.Email)
+	qry := query.NewView(request.ClassID, request.Email)
+	domainProfile, errorUseCase := h.useCase.Execute(*qry)
 	if errorUseCase != nil {
 		ginCTX.JSON(http.StatusInternalServerError, domainProfile)
 		return

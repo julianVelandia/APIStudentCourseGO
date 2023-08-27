@@ -17,8 +17,8 @@ func configureMappings(router *gin.Engine, handlers dependence.HandlerContainer)
 	apiGroupStudent := router.Group("v1.0/student")
 	apiGroupStudent.GET("/profile", handlers.ViewProfileHandler.Handler)
 
-	// Courses
-	apiGroupCourses := router.Group("v1.0/courses")
-	apiGroupCourses.GET("/course/:course_id", handlers.ViewCourseHandler.Handler)
-	apiGroupCourses.GET("/list/", handlers.ListCoursesHandler.Handler)
+	// Classes
+	apiGroupClasses := router.Group("v1.0/classes")
+	apiGroupClasses.GET("/class/:class_id", handlers.ViewClassHandler.Handler)
+	apiGroupClasses.GET("/list/", handlers.ListClassesHandler.Handler)
 }

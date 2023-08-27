@@ -1,12 +1,13 @@
 package contract
 
 type Response struct {
-	Courses []Course `json:"courses"`
+	Classes []Class `json:"classes"`
 }
 
-type Course struct {
-	CourseID string   `json:"course_id"`
-	Title    string   `json:"title"`
-	Content  string   `json:"content"`
-	Tags     []string `json:"tags"`
+type Class struct {
+	ClassID      string   `json:"class_id"`
+	Title        string   `json:"title"`
+	Content      []string `json:"content"`
+	CreationDate string   `json:"creation_date"`
+	ReadTime     int      `json:"read_time"`
 }

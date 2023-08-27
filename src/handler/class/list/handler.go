@@ -2,22 +2,21 @@ package list
 
 import (
 	"context"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/domain"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/platform/log"
-	contract2 "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/course/list/contract"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/domain"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/list/contract"
 )
 
 type UseCase interface {
-	Execute(ctx context.Context, qry query.List) ([]domain.Course, error)
+	Execute(ctx context.Context, qry query.List) ([]domain.Class, error)
 }
 
 type Mapper interface {
-	EntityToResponse(entities []domain.Course) contract2.Response
-	RequestToQuery(request contract2.URLParams) (query.List, error)
+	DomainToResponse(entities []domain.Class) contract.Response
+	RequestToQuery(request contract.URLParams) (query.List, error)
 }
 
 type ValidationParams interface {
@@ -40,23 +39,25 @@ type Handler struct {
 
 func (h Handler) Handler(ginCTX *gin.Context) {
 
-	requestParam := &contract2.URLParams{}
+	requestParam := &contract.URLParams{}
 
 	if errValidator := h.validationParams.BindParamsAndValidation(requestParam, ginCTX.Params); errValidator != nil {
-		log.Handler{}.Err(ginCTX, "Validator", errValidator, http.StatusBadRequest)
+		ginCTX.JSON(http.StatusBadRequest, nil)
 		return
 	}
+
 	qry, errMapper := h.mapper.RequestToQuery(*requestParam)
 	if errMapper != nil {
-		return errMapper
+		ginCTX.JSON(http.StatusBadRequest, nil)
+		return
 	}
 
 	entities, errUseCase := h.useCase.Execute(ginCTX, qry)
 	if errUseCase != nil {
-		return errUseCase
+		ginCTX.JSON(http.StatusInternalServerError, nil)
+		return
 	}
 
-	response := h.mapper.EntityToResponse(entities)
-
+	response := h.mapper.DomainToResponse(entities)
 	ginCTX.JSON(http.StatusOK, response)
 }

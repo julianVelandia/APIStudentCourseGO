@@ -1,27 +1,29 @@
 package usecase
 
 import (
-	"context"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/domain"
 )
 
-type SaveNewsLetterEmail interface {
-	SaveEmail(ctx context.Context, email string) error
+type RepositoryViewProfile interface {
+	GetProfileByEmail(email string) (domain.Profile, error)
+	GetClassesDoneByEmail(email string) ([]domain.Class, error)
 }
 
-type UseCase struct {
-	saveNewsLetterEmail SaveNewsLetterEmail
+type ViewUseCase struct {
+	repositoryViewProfile RepositoryViewProfile
 }
 
-func NewUseCase(saveNewsLetterEmail SaveNewsLetterEmail) *UseCase {
-	return &UseCase{saveNewsLetterEmail: saveNewsLetterEmail}
-}
+func (uc ViewUseCase) Execute(email string) (domain.Profile, []domain.Class, error) {
 
-func (uc UseCase) Execute(ctx context.Context, email string) error {
-
-	errSaveRecoveryToken := uc.saveNewsLetterEmail.SaveEmail(ctx, email)
-	if errSaveRecoveryToken != nil {
-		return errSaveRecoveryToken
+	domainProfile, err := uc.repositoryViewProfile.GetProfileByEmail(email)
+	if err != nil {
+		return domain.Profile{}, []domain.Class{}, err
 	}
 
-	return nil
+	classesDone, err := uc.repositoryViewProfile.GetClassesDoneByEmail(email)
+	if err != nil {
+		return domain.Profile{}, []domain.Class{}, err
+	}
+
+	return domainProfile, classesDone, nil
 }

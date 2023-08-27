@@ -7,7 +7,7 @@ import (
 )
 
 type RepositoryList interface {
-	GetByQuery(ctx context.Context, qry query.List) ([]domain.Course, error)
+	GetByQuery(qry query.List) ([]domain.Class, error)
 }
 
 type UseCase struct {
@@ -20,13 +20,13 @@ func NewUseCase(repositoryList RepositoryList) UseCase {
 	}
 }
 
-func (uc UseCase) Execute(ctx context.Context, qry query.List) ([]domain.Course, error) {
+func (uc UseCase) Execute(ctx context.Context, qry query.List) ([]domain.Class, error) {
 
-	coursesEntities, errRepository := uc.repositoryRead.GetByQuery(ctx, qry)
+	classesEntities, errRepository := uc.repositoryRead.GetByQuery(ctx, qry)
 
 	if errRepository != nil {
-		return make([]domain.Course, 0), errRepository
+		return make([]domain.Class, 0), errRepository
 	}
 
-	return coursesEntities, nil
+	return classesEntities, nil
 }

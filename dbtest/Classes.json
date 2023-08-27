@@ -1,0 +1,22 @@
+{
+  "classid1": {
+    "title":  "title Class 1",
+    "creationDate": "08/26/2023",
+    "content":  [
+      "content1",
+      "content2",
+      "content3"
+    ],
+    "readTime": 5.5
+  },
+  "classid2": {
+    "title":  "title Class 2",
+    "creationDate": "08/26/2023",
+    "content":  [
+      "content1",
+      "content2",
+      "content3"
+    ],
+    "readTime": 5.6
+  }
+}

@@ -1,6 +1,6 @@
-package contract
+package dto
 
-type Response struct {
+type Class struct {
 	ClassID      string   `json:"class_id"`
 	Title        string   `json:"title"`
 	CreationDate string   `json:"creation_date"`

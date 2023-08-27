@@ -1,0 +1,19 @@
+{
+  "test1@email.com": [
+    {
+      "class_id": "classid1",
+      "title": "clase 1"
+    },
+    {
+      "class_id": "classid2",
+      "title": "clase 1"
+    }
+  ],
+  "test2@email.com": [
+    {
+      "class_id": "classid1",
+      "title": "clase 1"
+    }
+  ]
+
+}

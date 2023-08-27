@@ -1,78 +1,68 @@
 package dependence
 
 import (
-	useCaseListCourse "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/application/usecase"
-	useCaseViewCourse "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/application/usecase/view"
-	repositoryCourseSQL "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/infrastructure/repository/mysql/course"
-	repositoryCourseMapperSQL "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/infrastructure/repository/mysql/mapper"
-	useCaseNewsLetterEmail "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/application/usecase"
-	repositoryStudentSQL "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/infrastructure/repository/mysql/student/newsletter"
-	platformParams "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/platform/params"
-	configuration "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/api/app/config"
-	handlerListCourses "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/course/list"
-	handlerMapperListCourse "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/course/list/mapper"
-	handlerViewCourse "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/course/view"
-	handlerMapperViewCourse "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/course/view/mapper"
-	handlerSaveNewsLetter "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/student/profile"
+	useCaseListClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/usecase"
+	handlerListClasses "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/list"
+	handlerMapperListClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/list/mapper"
+	handlerViewClass "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/class/view"
+	handlerViewProfile "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/student/view"
 )
 
 type HandlerContainer struct {
-	ListCoursesHandler handlerListCourses.Handler
-	ViewCourseHandler  handlerViewCourse.Handler
 	ViewProfileHandler handlerViewProfile.Handler
+	ListClassesHandler handlerListClasses.Handler
+	ViewClassHandler   handlerViewClass.Handler
 }
 
 func NewWire() HandlerContainer {
 
 	environmentConfig := configuration.GetConfig()
 	sqlClient := environmentConfig.ConfigMySQLClient().NewMysqlClient(environmentConfig.Scope().Value())
-	repositoryMapperCourse := repositoryCourseMapperSQL.Mapper{}
+	repositoryMapperClass := repositoryClassMapperSQL.Mapper{}
 
-	repositoryCourseList := repositoryCourseSQL.NewSqlListRepository(sqlClient, repositoryMapperCourse)
-	repositoryCourseView := repositoryCourseSQL.NewSqlViewRepository(sqlClient, repositoryMapperCourse)
+	repositoryClassList := repositoryClassSQL.NewSqlListRepository(sqlClient, repositoryMapperClass)
+	repositoryClassView := repositoryClassSQL.NewSqlViewRepository(sqlClient, repositoryMapperClass)
 
 	repositoryStudentWrite := repositoryStudentSQL.NewSqlWriteRepository(sqlClient)
 
 	return HandlerContainer{
-		ListCoursesHandler:    newWireListCoursesHandler(repositoryCourseList),
-		ViewCourseHandler:     newWireViewCourseHandler(repositoryCourseView, repositoryCourseList),
-		SaveNewsLetterHandler: newWireSaveNewsLetterHandler(*repositoryStudentWrite),
+		ListClassesHandler: newWireListClassesHandler(repositoryClassList),
+		ViewClassHandler:   newWireViewClassHandler(repositoryClassView, repositoryClassList),
+		ViewProfileHandler: newWireViewProfileHandler(),
 	}
 }
 
-func newWireListCoursesHandler(
-	repositoryList repositoryCourseSQL.SqlListRepository,
-) handlerListCourses.Handler {
+func newWireListClassesHandler(
+	repositoryList repositoryClassSQL.SqlListRepository,
+) handlerListClasses.Handler {
 
-	useCaseList := useCaseListCourse.NewUseCase(
+	useCaseList := useCaseListClass.NewUseCase(
 		repositoryList,
 	)
-	return *handlerListCourses.NewHandler(
+	return *handlerListClasses.NewHandler(
 		useCaseList,
-		handlerMapperListCourse.HandlerMapper{},
+		handlerMapperListClass.HandlerMapper{},
 		platformParams.NewParamValidation(getParamsValidationDefault()),
 	)
 }
 
-func newWireViewCourseHandler(
-	repositoryView repositoryCourseSQL.SqlViewRepository,
-	repositoryList repositoryCourseSQL.SqlListRepository,
-) handlerViewCourse.Handler {
+func newWireViewClassHandler(
+	repositoryView repositoryClassSQL.SqlViewRepository,
+	repositoryList repositoryClassSQL.SqlListRepository,
+) handlerViewClass.Handler {
 
-	useCaseView := useCaseViewCourse.NewUseCase(
+	useCaseView := useCaseViewClass.NewUseCase(
 		repositoryView,
 		repositoryList,
 	)
-	return *handlerViewCourse.NewHandler(
+	return *handlerViewClass.NewHandler(
 		useCaseView,
-		handlerMapperViewCourse.HandlerMapper{},
+		handlerMapperViewClass.HandlerMapper{},
 		platformParams.NewParamValidation(getParamsValidationDefault()),
 	)
 }
 
-func newWireSaveNewsLetterHandler(
-	repositoryWrite repositoryStudentSQL.SqlWriteRepository,
-) handlerSaveNewsLetter.Handler {
+func newWireViewProfileHandler() handlerSaveNewsLetter.Handler {
 	useCaseSaveEmailNewsLetter := useCaseNewsLetterEmail.NewUseCase(
 		repositoryWrite,
 	)
