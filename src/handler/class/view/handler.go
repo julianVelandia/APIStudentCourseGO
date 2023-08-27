@@ -10,6 +10,7 @@ import (
 )
 
 type Mapper interface {
+	RequestToQuery(ctx *gin.Context) (query.View, error)
 	DomainToResponse(class domain.Class) contract.Response
 }
 
@@ -27,18 +28,13 @@ func NewHandler(mapper Mapper, useCase UseCase) *Handler {
 }
 
 func (h Handler) Handler(ginCTX *gin.Context) {
-	request := &contract.Request{}
-	if errBinding := ginCTX.BindJSON(request); errBinding != nil {
+	qry, errBinding := h.mapper.RequestToQuery(ginCTX)
+	if errBinding != nil {
 		ginCTX.JSON(http.StatusBadRequest, nil)
 		return
 	}
 
-	qry := query.NewView(
-		request.Email,
-		request.ClassID,
-		request.Title,
-	)
-	domainProfile, errorUseCase := h.useCase.Execute(*qry)
+	domainProfile, errorUseCase := h.useCase.Execute(qry)
 	if errorUseCase != nil {
 		ginCTX.JSON(http.StatusInternalServerError, domainProfile)
 		return

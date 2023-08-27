@@ -15,9 +15,9 @@ func NewRouter() *gin.Engine {
 func configureMappings(router *gin.Engine, handlers dependence.HandlerContainer) {
 	// Student
 	apiGroupStudent := router.Group("v1.0/student")
-	apiGroupStudent.GET("/profile", handlers.ViewProfileHandler.Handler)
+	apiGroupStudent.GET("/profile/:email", handlers.ViewProfileHandler.Handler)
 
 	// Classes
 	apiGroupClasses := router.Group("v1.0/classes")
-	apiGroupClasses.GET("/class/:class_id", handlers.ViewClassHandler.Handler)
+	apiGroupClasses.GET("/class/:class_id/email/:email/title/:title", handlers.ViewClassHandler.Handler)
 }

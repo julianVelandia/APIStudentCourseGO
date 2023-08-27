@@ -2,7 +2,6 @@ package read
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/domain"
@@ -10,7 +9,7 @@ import (
 )
 
 const (
-	filenameClassesDone = "jsonStudentsClassesDone.json"
+	filenameClassesDone = "dbtest/StudentsClassesDone.json"
 )
 
 func (r ProfileRepositoryRead) GetClassesDoneByEmail(email string) ([]domain.Class, error) {
@@ -27,7 +26,7 @@ func (r ProfileRepositoryRead) GetClassesDoneByEmail(email string) ([]domain.Cla
 
 	classesDTO, found := classesDoneByUser[email]
 	if !found {
-		return []domain.Class{}, fmt.Errorf("no classes found for email: %s", email)
+		return []domain.Class{}, nil
 	}
 
 	classesDone := r.mapper.DTOClassesToDomain(classesDTO)

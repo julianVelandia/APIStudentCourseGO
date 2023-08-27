@@ -7,9 +7,9 @@ import (
 
 type Mapper struct{}
 
-func (m Mapper) DTOProfileToDomain(profile dto.Profile) domain.Profile {
+func (m Mapper) DTOProfileToDomain(email string, profile dto.Profile) domain.Profile {
 	return *domain.NewProfile(
-		profile.Email,
+		email,
 		profile.Name,
 	)
 }

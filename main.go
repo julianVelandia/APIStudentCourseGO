@@ -2,16 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
-
 	router "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/app"
 )
 
 func main() {
-
 	r := router.NewRouter()
-	err := r.Run(os.Getenv("PORT"))
-
+	err := r.Run(":8080")
 	if err != nil {
 		fmt.Println("error starting server: ", err)
 	}

@@ -24,8 +24,8 @@ func TestMapper_DTOProfileToDomain(t *testing.T) {
 		Name:  name,
 	}
 
-	domainProfile := mapperRead.DTOProfileToDomain(profile)
-	
+	domainProfile := mapperRead.DTOProfileToDomain(email, profile)
+
 	assert.Equal(t, email, domainProfile.Email())
 	assert.Equal(t, name, domainProfile.Name())
 }

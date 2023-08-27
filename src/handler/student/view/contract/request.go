@@ -1,5 +1,5 @@
 package contract
 
 type Request struct {
-	Email string `json:"email" binding:"required"`
+	Email string `json:"email"`
 }

@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	filenameClasses = "Classes.json"
+	filenameClasses = "dbtest/Classes.json"
 )
 
 type Mapper interface {

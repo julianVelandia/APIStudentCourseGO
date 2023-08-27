@@ -10,11 +10,11 @@ import (
 )
 
 const (
-	filenameProfile = "jsonStudentsProfile.json"
+	filenameProfile = "dbtest/StudentsProfile.json"
 )
 
 type Mapper interface {
-	DTOProfileToDomain(profile dto.Profile) domain.Profile
+	DTOProfileToDomain(email string, profile dto.Profile) domain.Profile
 	DTOClassesToDomain(classes []dto.Class) []domain.Class
 }
 
@@ -26,7 +26,7 @@ func NewProfileRepositoryRead(mapper Mapper) *ProfileRepositoryRead {
 	return &ProfileRepositoryRead{mapper: mapper}
 }
 
-func (r ProfileRepositoryRead) GetProfileByEmail(emailToFind string) (domain.Profile, error) {
+func (r ProfileRepositoryRead) GetProfileByEmail(email string) (domain.Profile, error) {
 	data, err := os.ReadFile(filenameProfile)
 	if err != nil {
 		return domain.Profile{}, err
@@ -38,12 +38,12 @@ func (r ProfileRepositoryRead) GetProfileByEmail(emailToFind string) (domain.Pro
 		return domain.Profile{}, err
 	}
 
-	foundProfileDTO, found := profiles[emailToFind]
+	foundProfileDTO, found := profiles[email]
 	if !found {
-		return domain.Profile{}, fmt.Errorf("profile not found for email: %s", emailToFind)
+		return domain.Profile{}, fmt.Errorf("profile not found for email: %s", email)
 	}
 
-	foundProfile := r.mapper.DTOProfileToDomain(foundProfileDTO)
+	foundProfile := r.mapper.DTOProfileToDomain(email, foundProfileDTO)
 
 	return foundProfile, nil
 }
