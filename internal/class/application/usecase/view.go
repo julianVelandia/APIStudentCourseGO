@@ -30,8 +30,8 @@ func (uc ViewUseCase) Execute(qry query.View) (domain.Class, error) {
 	}
 
 	cmd := command.NewUpdate(
-		qry.ClassID(),
 		qry.Email(),
+		qry.ClassID(),
 		qry.Title(),
 	)
 	err = uc.repositoryUpdateClassesDone.UpdateClassesByEmail(*cmd)

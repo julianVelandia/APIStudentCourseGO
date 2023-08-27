@@ -13,7 +13,7 @@ const (
 )
 
 type Mapper interface {
-	CommandToDTOClass(cmd command.Update) dto.Class
+	CommandToDTOClass(cmd command.Update) dto.ClassStudent
 }
 
 type ClassRepositoryWrite struct {
@@ -30,7 +30,7 @@ func (r ClassRepositoryWrite) UpdateClassesByEmail(cmd command.Update) error {
 		return err
 	}
 
-	classesDoneByUser := make(map[string][]dto.Class)
+	classesDoneByUser := make(map[string][]dto.ClassStudent)
 	err = json.Unmarshal(data, &classesDoneByUser)
 	if err != nil {
 		return err

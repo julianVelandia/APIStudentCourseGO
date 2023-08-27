@@ -7,8 +7,8 @@ import (
 
 type Mapper struct{}
 
-func (m Mapper) CommandToDTOClass(cmd command.Update) dto.Class {
-	return dto.Class{
+func (m Mapper) CommandToDTOClass(cmd command.Update) dto.ClassStudent {
+	return dto.ClassStudent{
 		ClassID: cmd.ClassID(),
 		Title:   cmd.Title(),
 	}

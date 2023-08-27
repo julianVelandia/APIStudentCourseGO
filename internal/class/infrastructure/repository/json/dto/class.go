@@ -7,3 +7,8 @@ type Class struct {
 	Content      []string `json:"content"`
 	ReadTime     float64  `json:"read_time"`
 }
+
+type ClassStudent struct {
+	ClassID string `json:"class_id"`
+	Title   string `json:"title"`
+}
