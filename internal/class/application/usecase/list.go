@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"context"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/application/query"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/domain"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/domain"
 )
 
 type RepositoryList interface {

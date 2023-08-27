@@ -1,9 +1,9 @@
-package ask
+package list
 
 import (
 	"context"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/application/query"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/domain"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/domain"
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/platform/log"
 	contract2 "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/course/list/contract"
 	"net/http"

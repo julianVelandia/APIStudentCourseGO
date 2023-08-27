@@ -2,8 +2,8 @@ package mapper
 
 import (
 	"fmt"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/application/query"
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/domain"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/domain"
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/platform/constant"
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/platform/mysql"
 	contract2 "github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/src/handler/course/list/contract"

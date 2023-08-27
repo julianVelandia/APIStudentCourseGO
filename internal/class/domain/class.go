@@ -1,7 +1,7 @@
 package domain
 
-type Course struct {
-	CourseID string
+type Class struct {
+	ClassID string
 	//StudentID        string
 	Title         string
 	CreationDate  string

@@ -1,7 +1,7 @@
 package query_test
 
 import (
-	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/course/application/query"
+	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/application/query"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
