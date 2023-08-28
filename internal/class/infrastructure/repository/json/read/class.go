@@ -9,24 +9,21 @@ import (
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/infrastructure/repository/json/dto"
 )
 
-const (
-	filenameClasses = "dbtest/Classes.json"
-)
-
 type Mapper interface {
 	DTOClassToDomain(class dto.Class) domain.Class
 }
 
 type ClassRepositoryRead struct {
-	mapper Mapper
+	mapper          Mapper
+	filenameClasses string
 }
 
-func NewClassRepositoryRead(mapper Mapper) *ClassRepositoryRead {
-	return &ClassRepositoryRead{mapper: mapper}
+func NewClassRepositoryRead(mapper Mapper, filenameClasses string) *ClassRepositoryRead {
+	return &ClassRepositoryRead{mapper: mapper, filenameClasses: filenameClasses}
 }
 
 func (r ClassRepositoryRead) GetClassByClassID(classID string) (domain.Class, error) {
-	data, err := os.ReadFile(filenameClasses)
+	data, err := os.ReadFile(r.filenameClasses)
 	if err != nil {
 		return domain.Class{}, err
 	}
