@@ -8,12 +8,8 @@ import (
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/infrastructure/repository/json/dto"
 )
 
-const (
-	filenameClassesDone = "dbtest/StudentsClassesDone.json"
-)
-
 func (r ProfileRepositoryRead) GetClassesDoneByEmail(email string) ([]domain.Class, error) {
-	data, err := os.ReadFile(filenameClassesDone)
+	data, err := os.ReadFile(r.filenameClassesDone)
 	if err != nil {
 		return []domain.Class{}, err
 	}

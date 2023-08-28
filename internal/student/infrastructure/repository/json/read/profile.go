@@ -15,12 +15,13 @@ type Mapper interface {
 }
 
 type ProfileRepositoryRead struct {
-	mapper          Mapper
-	filenameProfile string
+	mapper              Mapper
+	filenameProfile     string
+	filenameClassesDone string
 }
 
-func NewProfileRepositoryRead(mapper Mapper, filenameProfile string) *ProfileRepositoryRead {
-	return &ProfileRepositoryRead{mapper: mapper, filenameProfile: filenameProfile}
+func NewProfileRepositoryRead(mapper Mapper, filenameProfile string, filenameClassesDone string) *ProfileRepositoryRead {
+	return &ProfileRepositoryRead{mapper: mapper, filenameProfile: filenameProfile, filenameClassesDone: filenameClassesDone}
 }
 
 func (r ProfileRepositoryRead) GetProfileByEmail(email string) (domain.Profile, error) {

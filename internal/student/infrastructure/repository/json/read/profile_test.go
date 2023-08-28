@@ -23,7 +23,7 @@ func TestGetProfileByEmailWhenSuccessShouldReturnProfile(t *testing.T) {
 	}
 	expectedProfile := *domain.NewProfile(email, name)
 	mockMapper.On("DTOProfileToDomain", email, expectedProfileDTO).Return(expectedProfile, nil)
-	repository := read.NewProfileRepositoryRead(mockMapper, filenameProfile)
+	repository := read.NewProfileRepositoryRead(mockMapper, filenameProfile, filenameClassesDone)
 	result, err := repository.GetProfileByEmail(email)
 
 	assert.NoError(t, err)
@@ -34,7 +34,7 @@ func TestGetProfileByEmailWhenSuccessShouldReturnProfile(t *testing.T) {
 func TestGetProfileByEmailWhenReadFailShouldReturnError(t *testing.T) {
 	mockMapper := new(MapperMock)
 
-	repository := read.NewProfileRepositoryRead(nil, "")
+	repository := read.NewProfileRepositoryRead(nil, "", "")
 	result, err := repository.GetProfileByEmail(email)
 
 	assert.Error(t, err)
@@ -48,7 +48,7 @@ func TestGetProfileByEmailWhenMapperNotFoundShouldReturnEmpty(t *testing.T) {
 		Name: name,
 	}
 	mockMapper.On("DTOProfileToDomain", email, expectedProfileDTO).Return(domain.Profile{}, errors.New(""))
-	repository := read.NewProfileRepositoryRead(mockMapper, filenameProfile)
+	repository := read.NewProfileRepositoryRead(mockMapper, filenameProfile, filenameClassesDone)
 	result, err := repository.GetProfileByEmail(email)
 
 	assert.NoError(t, err)

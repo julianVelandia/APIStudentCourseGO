@@ -8,24 +8,21 @@ import (
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/class/infrastructure/repository/json/dto"
 )
 
-const (
-	filenameClassesDone = "dbtest/StudentsClassesDone.json"
-)
-
 type Mapper interface {
 	CommandToDTOClass(cmd command.Update) dto.ClassStudent
 }
 
 type ClassRepositoryWrite struct {
-	mapper Mapper
+	mapper              Mapper
+	filenameClassesDone string
 }
 
-func NewClassRepositoryWrite(mapper Mapper) *ClassRepositoryWrite {
-	return &ClassRepositoryWrite{mapper: mapper}
+func NewClassRepositoryWrite(mapper Mapper, filenameClassesDone string) *ClassRepositoryWrite {
+	return &ClassRepositoryWrite{mapper: mapper, filenameClassesDone: filenameClassesDone}
 }
 
 func (r ClassRepositoryWrite) UpdateClassesByEmail(cmd command.Update) error {
-	data, err := os.ReadFile(filenameClassesDone)
+	data, err := os.ReadFile(r.filenameClassesDone)
 	if err != nil {
 		return err
 	}
@@ -44,7 +41,7 @@ func (r ClassRepositoryWrite) UpdateClassesByEmail(cmd command.Update) error {
 		return err
 	}
 
-	err = os.WriteFile(filenameClassesDone, updatedData, 0644)
+	err = os.WriteFile(r.filenameClassesDone, updatedData, 0644)
 	if err != nil {
 		return err
 	}

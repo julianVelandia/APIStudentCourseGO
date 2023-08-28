@@ -21,14 +21,22 @@ type HandlerContainer struct {
 }
 
 func NewWire() HandlerContainer {
+	filenameProfile := "dbtest/StudentsProfile.json"
+	filenameClasses := "dbtest/Classes.json"
+	filenameClassesDone := "dbtest/StudentsClassesDone.json"
+
 	repositoryClassRead := repositoryViewClass.NewClassRepositoryRead(
 		mapperRepositoryViewClass.Mapper{},
+		filenameClasses,
 	)
 	repositoryClassUpdate := repositoryUpdateClass.NewClassRepositoryWrite(
 		mapperRepositoryUpdateClass.Mapper{},
+		filenameClassesDone,
 	)
 	repositoryProfileRead := repositoryViewProfile.NewProfileRepositoryRead(
 		mapperRepositoryViewProfile.Mapper{},
+		filenameProfile,
+		filenameClassesDone,
 	)
 
 	return HandlerContainer{
