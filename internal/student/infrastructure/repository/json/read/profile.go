@@ -9,25 +9,22 @@ import (
 	"github.com/julianVelandia/EDteam/SOLIDyHexagonal/ProyectoCurso/internal/student/infrastructure/repository/json/dto"
 )
 
-const (
-	filenameProfile = "dbtest/StudentsProfile.json"
-)
-
 type Mapper interface {
 	DTOProfileToDomain(email string, profile dto.Profile) domain.Profile
 	DTOClassesToDomain(classes []dto.Class) []domain.Class
 }
 
 type ProfileRepositoryRead struct {
-	mapper Mapper
+	mapper          Mapper
+	filenameProfile string
 }
 
-func NewProfileRepositoryRead(mapper Mapper) *ProfileRepositoryRead {
-	return &ProfileRepositoryRead{mapper: mapper}
+func NewProfileRepositoryRead(mapper Mapper, filenameProfile string) *ProfileRepositoryRead {
+	return &ProfileRepositoryRead{mapper: mapper, filenameProfile: filenameProfile}
 }
 
 func (r ProfileRepositoryRead) GetProfileByEmail(email string) (domain.Profile, error) {
-	data, err := os.ReadFile(filenameProfile)
+	data, err := os.ReadFile(r.filenameProfile)
 	if err != nil {
 		return domain.Profile{}, err
 	}
