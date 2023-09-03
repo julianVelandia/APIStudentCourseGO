@@ -14,5 +14,5 @@ The following hexagonal architecture (Of ports and adapters) is used, with two d
 
 * Data persistence
 
-For this project, 3 .json files are used, where the information is saved in the following formats
+For this project, 3 .json files are used
 
