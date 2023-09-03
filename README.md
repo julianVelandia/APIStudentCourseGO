@@ -10,6 +10,8 @@ ViewClass: Get the class information and update the class as a view in the user'
 * Architecture
 
 The following hexagonal architecture (Of ports and adapters) is used, with two domains (Classes and students)
+  
+  
   <img width="525" alt="image" src="https://github.com/julianVelandia/ClassAndStudentAPIGolang/assets/52173621/3871b530-2a1f-4829-a1b6-f966bcc6e6bf">
 
 * Data persistence
