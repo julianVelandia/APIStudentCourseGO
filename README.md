@@ -2,6 +2,8 @@
 
 SOLID Principles and hexagonal architecture course project
 
+Link: https://app.ed.team/cursos/solid
+
 * Endpoints
 
 GetProfile: Brings the user's profile with the classes he has seen
